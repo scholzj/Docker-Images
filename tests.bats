@@ -29,8 +29,10 @@ sslPort() {
     sleep 5 # give the image time to start
 
     run qpid-send -b ecag-fixml-dev1:$tcp -a "broadcast/broadcast.ABCFR.TradeConfirmation; { node: { type: topic}, assert: never, create: never }" -m 1 --durable --content-size 1024
+    echo $output
     [ "$status" -eq "0" ]
 
     run qpid-receive -b ecag-fixml-dev1:$ssl --connection-options "{ transport: ssl, sasl_mechanism: EXTERNAL }" -a "broadcast.ABCFR_ABCFRALMMACC1.TradeConfirmation; { node: { type: queue}, assert: never, create: never }" -m 1 --timeout 5
+    echo $output
     [ "$status" -eq "0" ]
 }
