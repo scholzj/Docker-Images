@@ -28,7 +28,7 @@ sslPort() {
     ssl=$(sslPort)
     sleep 5 # give the image time to start
 
-    run qpid-send -b ecag-fixml-dev1:$tcp -a "broadcast/broadcast.ABCFR.TradeConfirmation; { node: { type: topic}, assert: never, create: never }" -m 1 --durable yes --content-size 1024
+    run qpid-send -b admin/admin@ecag-fixml-dev1:$tcp -a "broadcast/broadcast.ABCFR.TradeConfirmation; { node: { type: topic}, assert: never, create: never }" -m 1 --durable yes --content-size 1024
     echo $output
     [ "$status" -eq "0" ]
 
