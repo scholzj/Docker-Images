@@ -36,3 +36,18 @@ sslPort() {
     echo $output
     [ "$status" -eq "0" ]
 }
+
+@test "Test broadcasts with AMQP 1.0" {
+    cont=$(sudo docker run -P -d $IMAGE:$VERSION)
+    tcp=$(tcpPort)
+    ssl=$(sslPort)
+    sleep 5 # give the image time to start
+
+    run qpid-send -b admin/admin@ecag-fixml-dev1:$tcp -a "broadcast/broadcast.ABCFR.TradeConfirmation; { node: { type: topic}, assert: never, create: never }" -m 1 --durable yes --content-size 1024
+    echo $output
+    [ "$status" -eq "0" ]
+
+    run qpid-receive -b ecag-fixml-dev1:$ssl --connection-options "{ transport: ssl, sasl_mechanism: EXTERNAL, protocol: amqp1.0 }" -a "broadcast.ABCFR_ABCFRALMMACC1.TradeConfirmationNCM; { node: { type: queue}, assert: never, create: never }" -m 1 --timeout 5
+    echo $output
+    [ "$status" -eq "0" ]
+}
