@@ -47,7 +47,7 @@ sslPort() {
     echo $output
     [ "$status" -eq "0" ]
 
-    run qpid-receive -b ecag-fixml-dev1:$ssl --connection-options "{ transport: ssl, sasl_mechanism: EXTERNAL, protocol: amqp1.0 }" -a "broadcast.ABCFR_ABCFRALMMACC1.TradeConfirmationNCM; { node: { type: queue}, assert: never, create: never }" -m 1 --timeout 5
+    run qpid-receive -b ecag-fixml-dev1:$ssl --connection-options "{ transport: ssl, sasl_mechanism: EXTERNAL, protocol: amqp1.0 }" -a "broadcast.ABCFR_ABCFRALMMACC1.TradeConfirmationCM; { node: { type: queue}, assert: never, create: never }" -m 1 --timeout 5
     echo $output
     [ "$status" -eq "0" ]
 }
