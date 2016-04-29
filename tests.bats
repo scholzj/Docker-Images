@@ -34,7 +34,7 @@ sslPort() {
     run qpid-send -b ersd01:$ssl --connection-options "{ transport: ssl, sasl_mechanism: EXTERNAL }" -a "eurex.ABCFR/ABCFR.ERS; { node: { type: topic} }" -m 1 --content-size=1024 --durable=yes --reply-to "eurex.response/ABCFR.response_queue_1; { node: { type: topic }, assert: never, create: never }"
     [ "$status" -eq "0" ]
 
-    run qpid-receive -b admin/admin@ersd01:$tcp -a "eurex.request.ABCFR; { node: { type: queue }, assert: never, create: never }" -m 1 --timeout 5 --report-total --report-header no --print-content no
+    run qpid-receive -b admin/admin@ersd01:$tcp -a "eurex.request.ABCFR; { node: { type: queue }, assert: never, create: never }" -m 1 --timeout 5 --report-total --report-header no --print-content no --reply-to "eurex.response/ABCFR.response_queue_1; { node: { type: topic }, assert: never, create: never }"
     [ "$status" -eq "0" ]
 
     wait $pid
