@@ -35,7 +35,7 @@ sslPort() {
     run qpid-receive -b ecag-fixml-dev1:$ssl --connection-options "{ transport: ssl, sasl_mechanism: EXTERNAL }" -a "broadcast.ABCFR_ABCFRALMMACC1.TradeConfirmation; { node: { type: queue}, assert: never, create: never }" -m 1 --timeout 5 --report-total --report-header no --print-content no
     echo $output
     [ "$status" -eq "0" ]
-    [ "${lines[0]}" = "0" ]
+    [ "${lines[0]}" != "0" ]
 }
 
 @test "Test broadcasts with AMQP 1.0" {
@@ -51,5 +51,5 @@ sslPort() {
     run qpid-receive -b ecag-fixml-dev1:$ssl --connection-options "{ transport: ssl, sasl_mechanism: EXTERNAL, protocol: amqp1.0 }" -a "broadcast.ABCFR_ABCFRALMMACC1.TradeConfirmation; { node: { type: queue}, assert: never, create: never }" -m 1 --timeout 5 --report-total --report-header no --print-content no
     echo $output
     [ "$status" -eq "0" ]
-    [ "${lines[0]}" = "0" ]
+    [ "${lines[0]}" != "0" ]
 }
