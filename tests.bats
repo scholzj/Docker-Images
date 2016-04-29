@@ -50,7 +50,7 @@ sslPort() {
     run qpid-send -b ecag-fixml-dev1:$ssl --connection-options "{ transport: ssl, sasl_mechanism: EXTERNAL }" -a "request.ABCFR_ABCFRALMMACC1; { node: { type: topic} }" -m 1 --content-size=1024 --durable=yes --reply-to "response/response.ABCFR_ABCFRALMMACC1.response_queue_1; { node: { type: topic }, assert: never, create: never }"
     [ "$status" -eq "0" ]
 
-    run qpid-receive -b admin/admin@ecag-fixml-dev1:$tcp -a "request_be.ABCFR_ABCFRALMMACC1.EUREX; { node: { type: queue }, assert: never, create: never }" -m 1 --timeout 5 --report-total --report-header no --print-content no
+    run qpid-receive -b admin/admin@ecag-fixml-dev1:$tcp -a "request_be.ABCFR_ABCFRALMMACC1; { node: { type: queue }, assert: never, create: never }" -m 1 --timeout 5 --report-total --report-header no --print-content no
     echo $output
     [ "$status" -eq "0" ]
 
