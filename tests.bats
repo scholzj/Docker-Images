@@ -28,11 +28,11 @@ sslPort() {
     ssl=$(sslPort)
     sleep 5 # give the image time to start
 
-    run qpid-send -b admin/admin@fpmld1:$tcp -a "broadcast/broadcast.ABCFR.TradeConfirmation; { node: { type: topic}, assert: never, create: never }" -m 1 --durable yes --content-size 1024
+    run qpid-send -b admin/admin@fpmld1:$tcp -a "broadcast/broadcast.ABCFR.TradeNotification; { node: { type: topic}, assert: never, create: never }" -m 1 --durable yes --content-size 1024
     echo $output
     [ "$status" -eq "0" ]
 
-    run qpid-receive -b fpmld1:$ssl --connection-options "{ transport: ssl, sasl_mechanism: EXTERNAL }" -a "broadcast.ABCFR_ABCFRALMMACC1.TradeConfirmation; { node: { type: queue}, assert: never, create: never }" -m 1 --timeout 5 --report-total --report-header no --print-content no
+    run qpid-receive -b fpmld1:$ssl --connection-options "{ transport: ssl, sasl_mechanism: EXTERNAL }" -a "broadcast.ABCFR_ABCFRALMMACC1.TradeNotification; { node: { type: queue}, assert: never, create: never }" -m 1 --timeout 5 --report-total --report-header no --print-content no
     echo $output
     [ "$status" -eq "0" ]
     [ "${lines[0]}" != "0" ]
