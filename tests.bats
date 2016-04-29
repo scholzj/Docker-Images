@@ -53,6 +53,7 @@ sslPort() {
 
     qpid-receive -b ersd01:$ssl --connection-options "{ transport: ssl, sasl_mechanism: EXTERNAL }" -a "eurex.tmp.ABCFR.broadcast_queue_1; {create: receiver, assert: never, node: { type: queue, x-declare: { auto-delete: true, exclusive: false, arguments: {'qpid.policy_type': ring, 'qpid.max_count': 1000, 'qpid.max_size': 1000000}}, x-bindings: [{exchange: 'eurex.broadcast', queue: 'eurex.tmp.ABCFR.broadcast_queue_1', key: 'public.#'}]}}" -m 1 -f --report-total --report-header no &> bcast-010.txt &
     pid=$!
+    sleep 2 # Give the bg process some time to connect, create queue and bind
 
     run qpid-send -b admin/admin@ersd01:$tcp -a "eurex.broadcast/public.TradingSessionStatus; { node: { type: topic} }" -m 1 --content-size=1024 --durable=yes
     [ "$status" -eq "0" ]
@@ -71,6 +72,7 @@ sslPort() {
 
     qpid-receive -b ersd01:$ssl --connection-options "{ transport: ssl, sasl_mechanism: EXTERNAL }" -a "eurex.tmp.ABCFR.broadcast_queue_1; {create: receiver, assert: never, node: { type: queue, x-declare: { auto-delete: true, exclusive: false, arguments: {'qpid.policy_type': ring, 'qpid.max_count': 1000, 'qpid.max_size': 1000000}}, x-bindings: [{exchange: 'eurex.broadcast', queue: 'eurex.tmp.ABCFR.broadcast_queue_1', key: 'ABCFR.#'}]}}" -m 1 -f --report-total --report-header no &> bcast-priv-010.txt &
     pid=$!
+    sleep 2 # Give the bg process some time to connect, create queue and bind
 
     run qpid-send -b admin/admin@ersd01:$tcp -a "eurex.broadcast/ABCFR.MessageType.PositionUpdate; { node: { type: topic} }" -m 1 --content-size=1024 --durable=yes
     [ "$status" -eq "0" ]
