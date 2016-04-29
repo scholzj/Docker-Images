@@ -55,7 +55,7 @@ sslPort() {
     [ "$status" -eq "0" ]
 
     wait $pid
-    $status=$?
+    status=$?
     [ "$status" -eq "0" ]
     [ "$(cat reqresp-010.txt)" != "0" ]
 }
