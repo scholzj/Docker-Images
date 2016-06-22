@@ -4,12 +4,17 @@ machine:
   services:
     - docker
 
-test:
-  override:
+dependencies:
+  pre:
     - sudo add-apt-repository ppa:duggan/bats --yes
     - sudo add-apt-repository ppa:qpid/released  --yes
     - sudo apt-get update -q
     - sudo apt-get install -q libsasl2-2 libsasl2-modules libsasl2-modules-db bats qpid-send qpid-receive
+
+test:
+  override:
+    - docker build -t ecmi/ers:prod .
+    - bats tests.bats
     
 deployment:
   docker:
