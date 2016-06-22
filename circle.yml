@@ -1,0 +1,20 @@
+machine:
+  hosts:
+    ersd01: 127.0.0.1
+  services:
+    - docker
+
+test:
+  override:
+    - sudo add-apt-repository ppa:duggan/bats --yes
+    - sudo add-apt-repository ppa:qpid/released  --yes
+    - sudo apt-get update -q
+    - sudo apt-get install -q libsasl2-2 libsasl2-modules libsasl2-modules-db bats qpid-send qpid-receive
+    
+deployment:
+  docker:
+    branch: /.*/
+    commands:
+      - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+      - docker tag -f ecmi/ers:prod docker.io/ecmi/ers:prod
+      - docker push ecmi/ers:prod
