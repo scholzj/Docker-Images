@@ -3,7 +3,7 @@
 # Eurex Clearing FIXML Interface
 #
 ####
-FROM		scholzj/merge-messaging:3.0.2
+FROM		scholzj/merge-messaging:3.2
 MAINTAINER      Jakub Scholz
 
 # Add configuration files
